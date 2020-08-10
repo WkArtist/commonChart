@@ -5,6 +5,9 @@
 </template>
 
 <style lang="scss">
+html,body{
+  background-color: #abcdef;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

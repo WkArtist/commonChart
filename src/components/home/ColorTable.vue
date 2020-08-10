@@ -3,9 +3,9 @@
       <h2>图表通用颜色</h2>
       <div class="color-list">
           <div class="color-item" v-for="ele in colorTable" :key="ele.color">
-              <div class="color-card"></div>
-              <div class="color-number"></div>
-              <div class="color-name"></div>
+              <div :class="['color-card',ele.value]"></div>
+              <div class="color-number">{{ele.color}}</div>
+              <div class="color-name">{{ele.name}}</div>
           </div>
       </div>
   </div>
@@ -53,16 +53,49 @@ export default {
 
 <style lang="scss" scoped>
     .color-table-wrap{
-        position: absolute;
-        left: 219px;
-        top: 63px;
         width: 1482px;
-        height: 100px;
-        padding: 15px;
+        height: 160px;
+        padding: 0 15px;
         box-sizing: border-box;
         background-color: rgba(0,0,0,0.6);
         .color-list{
-
+            display: flex;
+            .color-item{
+                width: 80px;
+                height: 80px;
+                font-size: 14px;
+                margin-right: 10px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-content: center;
+                .color-card{
+                    width: 40px;
+                    height: 40px;
+                    background-color: #FFF;
+                    &.cyan{
+                        background-color: $cyan;
+                    }
+                    &.yellow{
+                        background-color: $yellow;
+                    }
+                    &.green{
+                        background-color: $green;
+                    }
+                    &.red{
+                        background-color: $red;
+                    }
+                    &.violet{
+                        background-color: $violet;
+                    }
+                    &.grey{
+                        background-color: $grey;
+                    }
+                    &.blue{
+                        background-color: $blue;
+                    }
+                }
+            }
         }
     }
 </style>

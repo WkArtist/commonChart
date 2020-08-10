@@ -5,8 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    currentCode: ''
   },
   mutations: {
+    setCurrentCode(state, val) {
+      state.currentCode = val
+    }
   },
   actions: {
   },
