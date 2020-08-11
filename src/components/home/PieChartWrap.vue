@@ -43,7 +43,22 @@ export default {
           id: 2,
           name: '带说明多维饼图',
           type: 'pie',
-          active: false
+          active: false,
+          data: [
+            {
+              name: '社保服务办理',
+              value: 14595
+            }, {
+              name: '警务办理',
+              value: 2163
+            }, {
+              name: '营业执照办理',
+              value: 1621
+            }, {
+              name: '交通违法',
+              value: '8648'
+            }
+          ]
         }, {
           id: 3,
           name: '普通环形图',
@@ -129,7 +144,7 @@ export default {
                   return param.percent.toFixed(0) + '{val|%}\n{type|' + param.name + '}'
                 },
                 textStyle: {
-                  fontSize: 28,
+                  fontSize: 18,
                   fontWeight: 'bold',
                   color: '#fff',
                   rich: {
@@ -138,7 +153,7 @@ export default {
                       color: '#fff'
                     },
                     type: {
-                      fontSize: 14,
+                      fontSize: 12,
                       color: '#D9D9D9'
                     }
                   }
@@ -149,37 +164,154 @@ export default {
               show: false
             }
           }]
+        }, {
+          color: ['#2ED6E6', '#FFBB33', '#2AD49A', '#A667EA'],
+          series: [{
+            name: '数量',
+            type: 'pie',
+            radius: ['40%', '50%'],
+            center: ['50%', '50%'],
+            data: ele.data,
+            avoidLabelOverlap: true,
+            hoverOffset: 1,
+            itemStyle: {
+              normal: {
+                borderColor: 'rgba(255,255,255,0.01)',
+                borderWidth: 1
+              // color: function(params) {
+              //   return color[params.dataIndex]
+              // }
+              }
+            },
+            labelLine: {
+              normal: {
+              // length: 20,
+              // length2: 70
+                lineStyle: {
+                  color: 'rgba(255,255,255,0.5)'
+                }
+              }
+            },
+            label: {
+              normal: {
+                formatter: params => {
+                  if (params.name === '社保服务办理') {
+                    const value = '    ' + params.value
+                    return '{value|' + value + '次}\n{hr|}\n{name|' + params.name + '}'
+                  } else {
+                    return '{value|' + params.value + '次}\n{hr|}\n{name|' + params.name + '}'
+                  }
+                },
+                rich: {
+                  name: {
+                    fontSize: 12,
+                    color: 'rgba(255,255,255,0.7)',
+                    align: 'left',
+                    lineHeight: 18
+                  },
+                  hr: {
+                    width: '100%',
+                    borderColor: 'rgba(255,255,255,0.5)',
+                    borderWidth: 1,
+                    height: 0
+                  },
+                  value: {
+                    fontSize: 14,
+                    color: 'rgba(255,255,255,0.7)',
+                    lineHeight: 18,
+                    align: 'left'
+                  }
+                }
+              }
+            }
+
+          },
+          {
+            name: '外边框',
+            type: 'pie',
+            center: ['50%', '50%'],
+            radius: ['54%', '55%'],
+            hoverAnimation: false,
+            label: {
+              show: false
+            },
+            data: [{
+              value: 1,
+              itemStyle: {
+                normal: {
+                  color: 'rgba(255,255,255,0.5)'
+                }
+              }
+            }]
+          }
+          ]
         }
       ]
 
       ele.code = '<pre>' + JSON.stringify(optionpie[ele.id], undefined, 2) + '</pre>'
+      console.log(this.$refs)
       const chartPie = this.$refs[`chart${ele.id}`][0]
       const myChart = this.$echarts.init(chartPie)
       myChart.setOption(optionpie[ele.id])
+      const self = this
+      function clearCurrent() {
+        myChart.dispatchAction({
+          type: 'downplay',
+          seriesIndex: 0,
+          dataIndex: 0
+        })
+        myChart.dispatchAction({
+          type: 'downplay',
+          seriesIndex: 0,
+          dataIndex: 1
+        })
+      }
+      function rotation() {
+        let i = 1
+        self.timer = setInterval(() => {
+          clearCurrent()
+          myChart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            dataIndex: i % 2
+          })
+          i++
+        }, 3000)
+      }
       if (ele.id === 1) { // 轮播饼图
         myChart.dispatchAction({
           type: 'highlight',
           seriesIndex: 0,
           dataIndex: 0
         })
-        let i = 0
-        this.timer = setInterval(() => {
-          myChart.dispatchAction({
-            type: 'highlight',
-            seriesIndex: i % 2,
-            dataIndex: i % 2
-          })
-          i++
-        }, 3000)
+        rotation()
         myChart.on('mouseover', (e) => {
-          if (e.dataIndex !== 0) {
-            // 取消默认高亮
+          if (e.dataIndex === 1) {
+            clearInterval(self.timer)
+            self.timer = null
             myChart.dispatchAction({
               type: 'downplay',
               seriesIndex: 0,
               dataIndex: 0
             })
           }
+          if (e.dataIndex === 0) {
+            clearInterval(self.timer)
+            self.timer = null
+            myChart.dispatchAction({
+              type: 'downplay',
+              seriesIndex: 0,
+              dataIndex: 1
+            })
+          }
+        })
+        myChart.on('mouseout', (e) => {
+          myChart.dispatchAction({
+            type: 'highlight',
+            seriesIndex: 0,
+            dataIndex: 0
+          })
+          rotation()
         })
       }
     },
@@ -198,7 +330,10 @@ export default {
     }
   },
   mounted() {
-    this.renderChart(this.chartList[1])
+    // this.chartList.forEach((ele) => {
+    //   this.renderChart(ele)
+    // })
+    this.renderChart(this.chartList[2])
   }
 }
 </script>
