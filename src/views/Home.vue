@@ -3,6 +3,7 @@
     <ColorTable class="color-table"/>
     <PieChartWrap class="pie-chart"/>
     <CodeWrap class="code-wrap"/>
+    <LineChartWrap class="line-chart"/>
   </div>
 </template>
 
@@ -11,32 +12,30 @@
 import ColorTable from '@/components/home/ColorTable'
 import PieChartWrap from '@/components/home/PieChartWrap'
 import CodeWrap from '@/components/home/CodeWrap'
+import LineChartWrap from '@/components/home/LineChartWrap'
 export default {
   name: 'Home',
   components: {
     ColorTable,
     PieChartWrap,
-    CodeWrap
+    CodeWrap,
+    LineChartWrap
   }
 }
 </script>
 
 <style lang="scss" scoped>
   .home{
-    .color-table{
-      position: absolute;
-      left: 10px;
-      top: 10px;
-    }
     .pie-chart{
-      position: absolute;
-      left: 10px;
-      top: 190px;
+      margin-top: 20px;
     }
     .code-wrap{
       position: fixed;
       top: 0px;
       right: 0px;
+    }
+    .line-chart{
+      margin-top: 20px;
     }
   }
 </style>

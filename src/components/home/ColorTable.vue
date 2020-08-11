@@ -58,6 +58,10 @@ export default {
         padding: 0 15px;
         box-sizing: border-box;
         background-color: rgba(0,0,0,0.6);
+        h2{
+            margin-top: 0;
+            padding-top: 10px;
+        }
         .color-list{
             display: flex;
             .color-item{

@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import 'echarts-liquidfill/src/liquidFill'
 export default {
   data() {
     return {
@@ -63,12 +64,42 @@ export default {
           id: 3,
           name: '普通环形图',
           type: 'pie',
-          active: false
+          active: false,
+          data: [
+            {
+              name: '社保服务办理',
+              value: 14595
+            }, {
+              name: '警务办理',
+              value: 2163
+            }, {
+              name: '交通违法',
+              value: '8648'
+            }
+          ]
         }, {
           id: 4,
           name: '基础饼图',
           type: 'pie',
-          active: false
+          active: false,
+          data: [
+            {
+              name: '社保服务办理',
+              value: 14595
+            }, {
+              name: '警务办理',
+              value: 2163
+            }, {
+              name: '交通违法',
+              value: '8648'
+            }
+          ]
+        }, {
+          id: 5,
+          name: '进度图',
+          type: 'pie',
+          active: false,
+          data: [0.5, 0.5, 0.5]
         }
       ],
       currentCode: '',
@@ -166,6 +197,27 @@ export default {
           }]
         }, {
           color: ['#2ED6E6', '#FFBB33', '#2AD49A', '#A667EA'],
+          graphic: {
+            elements: [{
+              type: 'image',
+              style: {
+                image: require('../../assets/img/personnel.svg'),
+                width: 22,
+                height: 22
+              },
+              left: 'center',
+              top: '41%'
+            }]
+          },
+          title: {
+            text: '人员占比',
+            left: 'center',
+            top: '50%',
+            textStyle: {
+              fontSize: 12,
+              color: '#fff'
+            }
+          },
           series: [{
             name: '数量',
             type: 'pie',
@@ -244,6 +296,135 @@ export default {
               }
             }]
           }
+          ]
+        }, {
+          color: ['#A667EA', '#2AD49A', '#2ED6E6'],
+          legend: {
+            top: '82%',
+            icon: 'roundRect',
+            itemWidth: 18,
+            fontSize: 12,
+            itemHeight: 8,
+            itemGap: 10,
+            textStyle: {
+              padding: [1, 0, 0, 0],
+              color: '#fff'
+            }
+          },
+          series: [
+            {
+              name: '数量',
+              type: 'pie',
+              radius: ['40%', '50%'],
+              center: ['50%', '50%'],
+              data: ele.data,
+              avoidLabelOverlap: true,
+              hoverOffset: 1,
+              label: {
+                show: false
+              },
+              labelLine: {
+                show: false
+              }
+            }
+          ]
+        }, {
+          color: ['#A667EA', '#2AD49A', '#2ED6E6'],
+          legend: {
+            top: '82%',
+            icon: 'roundRect',
+            itemWidth: 18,
+            fontSize: 12,
+            itemHeight: 8,
+            itemGap: 10,
+            textStyle: {
+              padding: [1, 0, 0, 0],
+              color: '#fff'
+            }
+          },
+          series: [
+            {
+              name: '数量',
+              type: 'pie',
+              radius: '50%',
+              center: ['50%', '50%'],
+              data: ele.data,
+              avoidLabelOverlap: true,
+              hoverOffset: 1,
+              labelLine: {
+                normal: {
+                  lineStyle: {
+                    color: 'rgba(255,255,255,0.5)'
+                  }
+                }
+              },
+              label: {
+                normal: {
+                  color: 'rgba(255,255,255,0.7)'
+                }
+              }
+            }
+          ]
+        }, {
+          series: [
+            {
+              type: 'liquidFill',
+              radius: '45%',
+              center: ['50%', '50%'],
+              data: ele.data, // data个数代表波浪数
+              backgroundStyle: {
+                borderWidth: 0,
+                color: 'rgba(255,255,255,0.01)'
+              },
+              itemStyle: {
+                color: '#2ED6E6'
+              },
+              label: {
+                normal: {
+                  formatter: (0.5 * 100).toFixed(0) + '{unit|%}\n{text|xx占比}',
+                  textStyle: {
+                    fontSize: 20,
+                    color: '#fff',
+                    rich: {
+                      unit: {
+                        fontSize: 12
+                      },
+                      text: {
+                        fontSize: 12,
+                        lineHeight: 20
+                      }
+                    }
+                  }
+                }
+              },
+              outline: {
+                show: false
+              }
+            },
+            {
+              type: 'pie',
+              center: ['50%', '50%'],
+              radius: ['50%', '54%'],
+              hoverAnimation: false,
+              data: [
+                {
+                  name: '',
+                  value: 500,
+                  labelLine: {
+                    show: false
+                  },
+                  itemStyle: {
+                    color: '#2ED6E6'
+                  }
+                }
+              ],
+              label: {
+                show: false
+              },
+              labelLine: {
+                show: false
+              }
+            }
           ]
         }
       ]
@@ -330,10 +511,10 @@ export default {
     }
   },
   mounted() {
-    // this.chartList.forEach((ele) => {
-    //   this.renderChart(ele)
-    // })
-    this.renderChart(this.chartList[2])
+    this.chartList.forEach((ele) => {
+      this.renderChart(ele)
+    })
+    // this.renderChart(this.chartList[2])
   }
 }
 </script>

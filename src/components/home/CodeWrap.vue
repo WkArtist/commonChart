@@ -44,8 +44,8 @@ export default {
 
 <style lang="scss" scoped>
     .code-wrap{
-        width: 420px;
-        height: 1000px;
+        width: 410px;
+        height: 920px;
         background-color: rgb(30,30,30);
         box-sizing: border-box;
         overflow: auto;
