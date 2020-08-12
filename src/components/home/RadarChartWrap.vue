@@ -17,45 +17,37 @@ export default {
       chartList: [
         {
           id: 0,
-          name: '基础线型图',
-          type: 'line',
+          name: '基础雷达图',
+          type: 'radar',
           active: false,
           data: {
-            xAxis: ['07-01', '07-06', '07-12', '07-18', '07-24', '07-30'],
-            yAxis: [200, 123, 324, 422, 625, 456, 566]
-          }
-        }, {
-          id: 1,
-          name: '多条线性图',
-          type: 'line',
-          active: false,
-          data: {
-            xAxis: ['10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
-            yAxis: [
-              [30, 40, 54, 65, 34, 54, 67],
-              [34, 54, 65, 76, 78, 98, 54]
-            ]
-          }
-        }, {
-          id: 2,
-          name: '区域线型图',
-          type: 'line',
-          active: false,
-          data: {
-            xAxis: ['07-01', '07-06', '07-12', '07-18', '07-24', '07-30'],
-            yAxis: [200, 123, 324, 422, 625, 456, 566]
-          }
-        }, {
-          id: 3,
-          name: '多维区域线型图',
-          type: 'line',
-          active: false,
-          data: {
-            xAxis: ['10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
-            yAxis: [
-              [30, 40, 54, 65, 34, 54, 67],
-              [34, 54, 65, 76, 78, 98, 54]
-            ]
+            bg: [
+              {
+                text: '购物\n741',
+                max: 1000
+              },
+              {
+                text: '餐饮\n800',
+                max: 1000
+              },
+              {
+                text: '休闲\n210',
+                max: 1000
+              },
+              {
+                text: '旅游\n97',
+                max: 1000
+              },
+              {
+                text: '住宿\n61',
+                max: 1000
+              },
+              {
+                text: '其他\n132',
+                max: 1000
+              }
+            ],
+            data: [741, 800, 210, 97, 61, 132]
           }
         }
       ],
@@ -64,498 +56,75 @@ export default {
   },
   methods: {
     renderChart(ele) {
-      const lineColor = ['#2AD49A', '#2ED6E6']
       const optionLine = [
         {
-          grid: {
-            left: '5%',
-            right: '10%',
-            top: '40%',
-            bottom: '10%',
-            containLabel: true
-          },
-          tooltip: {
-            show: true,
-            trigger: 'axis'
-          },
-          legend: {
-            show: true,
-            x: 'center',
-            y: '45',
-            icon: 'roundRect',
-            itemWidth: 16,
-            itemHeight: 5,
-            itemGap: 36,
-            textStyle: {
-              color: '#D9D9D9',
-              padding: [2, 0, 0, 0]
-            },
-            data: ['办理次数']
-          },
-          xAxis: [
-            {
-              type: 'category',
-              boundaryGap: false,
-              axisLabel: {
-                fontSize: 12,
-                color: '#D9D9D9'
+          radar: [{
+            indicator: ele.data.bg,
+            center: ['center', '60%'],
+            startAngle: 0,
+            radius: '70%',
+            name: {
+              formatter: function(value, indicator) {
+                const name = value.substring(0, value.indexOf('\n'))
+                const values = value.substring(value.indexOf('\n') + 1, value.length) // 去掉\n
+                return '{yellow|' + name + ':' + values + 'w}'
               },
-              axisLine: {
-                show: true,
-                lineStyle: {
-                  color: 'rgba(255,255,255,0.5)'
-                }
-              },
-              axisTick: { show: false },
-              data: ele.data.xAxis
-            }
-          ],
-          yAxis: [
-            {
-              name: '次',
-              type: 'value',
-              splitNumber: 3,
-              // scale: true,
-              // interval: 200,
-              nameTextStyle: {
-                color: '#8e8e8e',
-                fontSize: 12,
-                padding: [0, 30, 0, 0],
-                rich: {
-                  val: {
-                    fontSize: 12,
-                    color: '#8e8e8e'
-                  }
-                }
-              },
-              axisLabel: {
-                formatter: (value, index) => {
-                  return value
-                },
-                textStyle: {
-                  color: '#8E8E8E'
-                }
-              },
-              axisLine: {
-                show: false
-              },
-              axisTick: {
-                show: false
-              },
-              splitLine: {
-                show: true,
-                lineStyle: {
-                  color: ['rgba(217,217,217,0)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)'],
-                  type: 'dashed'
+              rich: {
+                yellow: {
+                  color: '#2ed6e6',
+                  fontSize: 12
                 }
               }
-            }
-          ],
-          series: [
-            {
-              name: '办理次数',
-              type: 'line',
-              smooth: true,
-              symbol: 'circle',
-              symbolSize: 2,
-              itemStyle: {
-                normal: {
-                  color: '#2ED6E6'
-                }
-              },
-              data: ele.data.yAxis
-            }
-          ]
-        }, {
-          grid: {
-            left: '5%',
-            right: '10%',
-            top: '40%',
-            bottom: '10%',
-            containLabel: true
-          },
-          tooltip: {
-            show: true,
-            trigger: 'axis',
-            formatter: function(params) {
-              let str = ''
-              params.forEach(v => {
-                console.log(v)
-                str += `<div style="text-align: left">
-                <div><span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${lineColor[v.componentIndex]};"></span>${v.seriesName}：${v.name}</div>
-                <div>已用车位：${v.data * 10200 / 100}</div>
-                <div>空闲车位：${(100 - v.data) * 10200 / 100}</div>
-                <div>占用率：${v.data}%</div>
-              </div>`
-              })
-              return str
-            }
-          },
-          legend: {
-            show: true,
-            x: 'center',
-            y: '45',
-            icon: 'roundRect',
-            itemWidth: 16,
-            fontSize: 12,
-            itemHeight: 5,
-            itemGap: 36,
-            textStyle: {
-              color: '#D9D9D9',
-              padding: [3, 0, 0, 0]
             },
-            data: ['今日', '昨日']
-          },
-          xAxis: [
-            {
-              type: 'category',
-              boundaryGap: false,
-              axisLabel: {
-                color: '#d9d9d9'
-              },
-              axisLine: {
-                show: true,
-                lineStyle: {
-                  color: 'rgba(255,255,255,0.5)'
-                }
-              },
-              axisTick: { show: false },
-              data: ele.data.xAxis
-            }
-          ],
-          yAxis: [
-            {
-              type: 'value',
-              name: '%',
-              // splitNumber: 3,
-              max: 100,
-              nameTextStyle: {
-                color: '#8e8e8e',
-                fontSize: 12,
-                padding: [0, 30, -5, 0]
-              },
-              axisLabel: {
-                formatter: (value, index) => {
-                  return value
-                },
-                textStyle: {
-                  color: '#8e8e8e'
-                }
-              },
-              axisLine: {
-                show: false
-              },
-              axisTick: {
-                show: false
-              },
-              splitLine: {
-                show: true,
-                lineStyle: {
-                  color: ['rgba(217,217,217,0)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)'],
-                  type: 'dashed'
-                }
+            nameGap: 5,
+            splitLine: {
+              lineStyle: {
+                color: 'rgba(255,255,255,0.2)',
+                opacity: 1,
+                width: 1
+              }
+            },
+            splitArea: {
+              show: false
+            },
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: 'rgba(255,255,255,0.2)'
               }
             }
-          ],
-          series: [
-            {
-              yAxisIndex: 0,
-              name: '昨日',
-              type: 'line',
-              smooth: true,
-
-              symbol: 'circle',
-              symbolSize: 2,
-              itemStyle: {
-                normal: {
-                  color: '#2AD49A',
-                  lineStyle: {
-                    color: '#2AD49A',
-                    width: 2
-                  }
-                }
-              },
-              data: ele.data.yAxis[0]
-            },
-            {
-              name: '今日',
-              type: 'line',
-              smooth: true,
-              symbol: 'circle',
-              symbolSize: 2,
-              itemStyle: {
-                normal: {
-                  color: '#2ED6E6',
-                  lineStyle: {
-                    color: '#2ED6E6',
-                    width: 2
-                  }
-                }
-              },
-              data: ele.data.yAxis[1]
-            }
-          ]
-        }, {
+          }],
           grid: {
-            left: '5%',
-            right: '10%',
-            top: '40%',
-            bottom: '10%',
             containLabel: true
           },
-          tooltip: {
-            show: true,
-            trigger: 'axis'
-          },
-          legend: {
-            show: true,
-            x: 'center',
-            y: '45',
-            icon: 'roundRect',
-            itemWidth: 16,
-            itemHeight: 5,
-            itemGap: 36,
-            textStyle: {
-              color: '#D9D9D9',
-              padding: [2, 0, 0, 0]
+          series: [{
+            type: 'radar',
+            data: [{
+              value: ele.data.data
+            }],
+            symbolSize: 3,
+            itemStyle: {
+              normal: {
+                borderColor: '#2ed6e6',
+                borderWidth: 2
+              }
             },
-            data: ['办理次数']
-          },
-          xAxis: [
-            {
-              type: 'category',
-              boundaryGap: false,
-              axisLabel: {
-                fontSize: 12,
-                color: '#D9D9D9'
-              },
-              axisLine: {
-                show: true,
-                lineStyle: {
-                  color: 'rgba(255,255,255,0.5)'
-                }
-              },
-              axisTick: { show: false },
-              data: ele.data.xAxis
-            }
-          ],
-          yAxis: [
-            {
-              name: '次',
-              type: 'value',
-              splitNumber: 3,
-              // scale: true,
-              // interval: 200,
-              nameTextStyle: {
-                color: '#8e8e8e',
-                fontSize: 12,
-                padding: [0, 30, 0, 0],
-                rich: {
-                  val: {
-                    fontSize: 12,
-                    color: '#8e8e8e'
-                  }
-                }
-              },
-              axisLabel: {
-                formatter: (value, index) => {
-                  return value
-                },
-                textStyle: {
-                  color: '#8E8E8E'
-                }
-              },
-              axisLine: {
-                show: false
-              },
-              axisTick: {
-                show: false
-              },
-              splitLine: {
-                show: true,
-                lineStyle: {
-                  color: ['rgba(217,217,217,0)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)'],
-                  type: 'dashed'
-                }
+            lineStyle: {
+              normal: {
+                color: '#2ed6e6',
+                width: 2
+              }
+            },
+            areaStyle: {
+              normal: {
+                color: '#2ed6e6',
+                opacity: 0.2
               }
             }
-          ],
-          series: [
-            {
-              name: '办理次数',
-              type: 'line',
-              smooth: true,
-              symbol: 'circle',
-              symbolSize: 2,
-              itemStyle: {
-                normal: {
-                  color: '#2ED6E6'
-                }
-              },
-              areaStyle: {
-                color: new this.$echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-                  offset: 0,
-                  color: 'rgba(46,214,230,0)'
-                }, {
-                  offset: 1,
-                  color: 'rgba(46,214,230,0.3)'
-                }])
-              },
-              data: ele.data.yAxis
-            }
-          ]
-        }, {
-          grid: {
-            left: '5%',
-            right: '10%',
-            top: '40%',
-            bottom: '10%',
-            containLabel: true
-          },
-          tooltip: {
-            show: true,
-            trigger: 'axis',
-            formatter: function(params) {
-              let str = ''
-              params.forEach(v => {
-                console.log(v)
-                str += `<div style="text-align: left">
-                <div><span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${lineColor[v.componentIndex]};"></span>${v.seriesName}：${v.name}</div>
-                <div>已用车位：${v.data * 10200 / 100}</div>
-                <div>空闲车位：${(100 - v.data) * 10200 / 100}</div>
-                <div>占用率：${v.data}%</div>
-              </div>`
-              })
-              return str
-            }
-          },
-          legend: {
-            show: true,
-            x: 'center',
-            y: '45',
-            icon: 'roundRect',
-            itemWidth: 16,
-            fontSize: 12,
-            itemHeight: 5,
-            itemGap: 36,
-            textStyle: {
-              color: '#D9D9D9',
-              padding: [3, 0, 0, 0]
-            },
-            data: ['今日', '昨日']
-          },
-          xAxis: [
-            {
-              type: 'category',
-              boundaryGap: false,
-              axisLabel: {
-                color: '#d9d9d9'
-              },
-              axisLine: {
-                show: true,
-                lineStyle: {
-                  color: 'rgba(255,255,255,0.5)'
-                }
-              },
-              axisTick: { show: false },
-              data: ele.data.xAxis
-            }
-          ],
-          yAxis: [
-            {
-              type: 'value',
-              name: '%',
-              // splitNumber: 3,
-              max: 100,
-              nameTextStyle: {
-                color: '#8e8e8e',
-                fontSize: 12,
-                padding: [0, 30, -5, 0]
-              },
-              axisLabel: {
-                formatter: (value, index) => {
-                  return value
-                },
-                textStyle: {
-                  color: '#8e8e8e'
-                }
-              },
-              axisLine: {
-                show: false
-              },
-              axisTick: {
-                show: false
-              },
-              splitLine: {
-                show: true,
-                lineStyle: {
-                  color: ['rgba(217,217,217,0)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)', 'rgba(217,217,217,0.6)'],
-                  type: 'dashed'
-                }
-              }
-            }
-          ],
-          series: [
-            {
-              yAxisIndex: 0,
-              name: '昨日',
-              type: 'line',
-              smooth: true,
-
-              symbol: 'circle',
-              symbolSize: 2,
-              itemStyle: {
-                normal: {
-                  color: '#2AD49A',
-                  lineStyle: {
-                    color: '#2AD49A',
-                    width: 2
-                  }
-                }
-              },
-              areaStyle: {
-                color: new this.$echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-                  offset: 0,
-                  color: 'rgba(42,212,154,0)'
-                }, {
-                  offset: 1,
-                  color: 'rgba(42,212,154,0.3)'
-                }])
-              },
-              data: ele.data.yAxis[0]
-            },
-            {
-              name: '今日',
-              type: 'line',
-              smooth: true,
-              symbol: 'circle',
-              symbolSize: 2,
-              itemStyle: {
-                normal: {
-                  color: '#2ED6E6',
-                  lineStyle: {
-                    color: '#2ED6E6',
-                    width: 2
-                  }
-                }
-              },
-              areaStyle: {
-                color: new this.$echarts.graphic.LinearGradient(0, 1, 0, 0, [{
-                  offset: 0,
-                  color: 'rgba(46,214,230,0)'
-                }, {
-                  offset: 1,
-                  color: 'rgba(46,214,230,0.3)'
-                }])
-              },
-              data: ele.data.yAxis[1]
-            }
-          ]
+          }]
         }
       ]
-
       ele.code = '<pre>' + JSON.stringify(optionLine[ele.id], undefined, 2) + '</pre>'
-      console.log(this.$refs)
       const chartLine = this.$refs[`chart${ele.id}`][0]
       const myChart = this.$echarts.init(chartLine)
       myChart.setOption(optionLine[ele.id])
@@ -575,7 +144,6 @@ export default {
     this.chartList.forEach((ele) => {
       this.renderChart(ele)
     })
-    // this.renderChart(this.chartList[2])
   }
 }
 </script>

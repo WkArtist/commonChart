@@ -4,6 +4,8 @@
     <PieChartWrap class="pie-chart"/>
     <CodeWrap class="code-wrap"/>
     <LineChartWrap class="line-chart"/>
+    <BarChartWrap class="bar-chart"/>
+    <RadarChartWrap class="radar-chart"/>
   </div>
 </template>
 
@@ -13,13 +15,17 @@ import ColorTable from '@/components/home/ColorTable'
 import PieChartWrap from '@/components/home/PieChartWrap'
 import CodeWrap from '@/components/home/CodeWrap'
 import LineChartWrap from '@/components/home/LineChartWrap'
+import RadarChartWrap from '@/components/home/RadarChartWrap'
+import BarChartWrap from '@/components/home/BarChartWrap'
 export default {
   name: 'Home',
   components: {
     ColorTable,
     PieChartWrap,
     CodeWrap,
-    LineChartWrap
+    LineChartWrap,
+    RadarChartWrap,
+    BarChartWrap
   }
 }
 </script>
@@ -35,6 +41,12 @@ export default {
       right: 0px;
     }
     .line-chart{
+      margin-top: 20px;
+    }
+    .bar-chart{
+      margin-top: 20px;
+    }
+    .radar-chart{
       margin-top: 20px;
     }
   }
