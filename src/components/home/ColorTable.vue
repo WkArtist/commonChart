@@ -53,7 +53,7 @@ export default {
 
 <style lang="scss" scoped>
     .color-table-wrap{
-        width: 1482px;
+        width: 1422px;
         height: 160px;
         padding: 0 15px;
         box-sizing: border-box;
