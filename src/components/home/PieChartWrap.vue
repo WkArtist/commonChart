@@ -429,7 +429,7 @@ export default {
         }
       ]
 
-      ele.code = '<pre>' + JSON.stringify(optionpie[ele.id], undefined, 2) + '</pre>'
+      ele.code = JSON.stringify(optionpie[ele.id], undefined, 2)
       const chartPie = this.$refs[`chart${ele.id}`][0]
       const myChart = this.$echarts.init(chartPie)
       myChart.setOption(optionpie[ele.id])
