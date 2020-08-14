@@ -1,6 +1,15 @@
 <template>
   <div class="code-wrap">
       <codemirror ref="myCm" class="code-mirrir" v-model="content" :options="cmOptions"/>
+      <!-- <editor
+      v-model="content"
+      @init="editorInit"
+      lang="html"
+      theme="chrome"
+      width="470"
+      height="920"
+      ></editor> -->
+      <!-- <jsonView :json="content" :closed="false"/> -->
   </div>
 </template>
 
@@ -8,25 +17,47 @@
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/theme/base16-dark.css'
 import 'codemirror/mode/javascript/javascript.js'
+import 'codemirror/keymap/sublime' // sublime编辑器效果
+import 'codemirror/mode/css/css'
+import 'codemirror/theme/monokai.css' // 编辑器主题样式，配置里面theme需要设置monokai
+// 代码折叠
+import 'codemirror/addon/fold/foldgutter.css'
+import 'codemirror/addon/fold/foldcode'
+import 'codemirror/addon/fold/foldgutter'
+import 'codemirror/addon/fold/brace-fold'
+import 'codemirror/addon/fold/comment-fold'
+
+// import { jsonView } from 'jsonview-vue'
 export default {
   components: {
     codemirror
+    // editor: require('vue2-ace-editor')
+    // jsonView
   },
   data() {
     return {
       content: '',
-      code: 'const a = 10',
       cmOptions: {
         tabSize: 4,
-        mode: 'text/javascript',
-        theme: 'base16-dark',
+        mode: 'application/json',
+        theme: 'monokai',
         lineNumbers: true,
-        line: true
+        line: true,
+        foldGutter: true,
+        lineWrapping: true,
+        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers']
       }
     }
   },
   methods: {
-
+    editorInit() {
+      require('brace/ext/language_tools') // language extension prerequsite...
+      require('brace/mode/html')
+      require('brace/mode/javascript') // language
+      require('brace/mode/less')
+      require('brace/theme/github')
+      require('brace/snippets/javascript') // snippet
+    }
   },
   computed: {
     currentCode() {
