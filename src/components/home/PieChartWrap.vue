@@ -15,6 +15,7 @@ import 'echarts-liquidfill/src/liquidFill'
 export default {
   data() {
     return {
+      name: 'PieChart',
       chartList: [
         {
           id: 0,
@@ -496,9 +497,19 @@ export default {
       }
     },
     clearActive() {
-      this.timer = null
+      if (this.$store.state.clearActive.from === this.name) {
+        return
+      }
+
+      this.chartList.forEach(ele => {
+        ele.active = false
+      })
     },
     selectItem(id) {
+      this.$store.commit('setClearActive', {
+        from: this.name,
+        value: !this.$store.state.clearActive.value
+      })
       this.chartList.forEach(ele => {
         if (ele.id === id) {
           ele.active = !ele.active
@@ -507,6 +518,16 @@ export default {
           ele.active = false
         }
       })
+    }
+  },
+  computed: {
+    listenClearActive() {
+      return this.$store.state.clearActive.value
+    }
+  },
+  watch: {
+    listenClearActive(val) {
+      this.clearActive()
     }
   },
   mounted() {

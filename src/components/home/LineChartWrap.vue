@@ -14,6 +14,7 @@
 export default {
   data() {
     return {
+      name: 'LineChart',
       chartList: [
         {
           id: 0,
@@ -180,7 +181,6 @@ export default {
             formatter: function(params) {
               let str = ''
               params.forEach(v => {
-                console.log(v)
                 str += `<div style="text-align: left">
                 <div><span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${lineColor[v.componentIndex]};"></span>${v.seriesName}：${v.name}</div>
                 <div>已用车位：${v.data * 10200 / 100}</div>
@@ -558,7 +558,20 @@ export default {
       const myChart = this.$echarts.init(chartLine)
       myChart.setOption(optionLine[ele.id])
     },
+    clearActive() {
+      if (this.$store.state.clearActive.from === this.name) {
+        return
+      }
+
+      this.chartList.forEach(ele => {
+        ele.active = false
+      })
+    },
     selectItem(id) {
+      this.$store.commit('setClearActive', {
+        from: this.name,
+        value: !this.$store.state.clearActive.value
+      })
       this.chartList.forEach(ele => {
         if (ele.id === id) {
           ele.active = !ele.active
@@ -567,6 +580,16 @@ export default {
           ele.active = false
         }
       })
+    }
+  },
+  computed: {
+    listenClearActive() {
+      return this.$store.state.clearActive.value
+    }
+  },
+  watch: {
+    listenClearActive(val) {
+      this.clearActive()
     }
   },
   mounted() {

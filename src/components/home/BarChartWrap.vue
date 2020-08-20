@@ -14,6 +14,7 @@
 export default {
   data() {
     return {
+      name: 'BarChart',
       chartList: [
         {
           id: 0,
@@ -536,7 +537,20 @@ export default {
       const myChart = this.$echarts.init(chartLine)
       myChart.setOption(optionLine[ele.id])
     },
+    clearActive() {
+      if (this.$store.state.clearActive.from === this.name) {
+        return
+      }
+
+      this.chartList.forEach(ele => {
+        ele.active = false
+      })
+    },
     selectItem(id) {
+      this.$store.commit('setClearActive', {
+        from: this.name,
+        value: !this.$store.state.clearActive.value
+      })
       this.chartList.forEach(ele => {
         if (ele.id === id) {
           ele.active = !ele.active
@@ -545,6 +559,17 @@ export default {
           ele.active = false
         }
       })
+    }
+
+  },
+  computed: {
+    listenClearActive() {
+      return this.$store.state.clearActive.value
+    }
+  },
+  watch: {
+    listenClearActive(val) {
+      this.clearActive()
     }
   },
   mounted() {
