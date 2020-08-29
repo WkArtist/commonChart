@@ -64,12 +64,16 @@ export default {
   },
   computed: {
     currentCode() {
-      return this.$store.state.currentCode
+      return this.$store.state.chartData[this.$store.state.currentActive.type][this.$store.state.currentActive.index].code
     }
   },
   watch: {
-    currentCode(val) {
-      this.content = val
+    currentCode: {
+      handler: function(val) {
+        console.log(val)
+        this.content = val
+      },
+      deep: true
     }
   }
 }

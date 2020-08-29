@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { clearKeyQuotationMarks, dynamicPieChart, addKeyQuotationMarks } from '@/util.js'
+import { clearKeyQuotationMarks, dynamicPieChart } from '@/util.js'
 import 'echarts-liquidfill/src/liquidFill'
 export default {
   data() {
@@ -475,46 +475,7 @@ export default {
     this.chartList.forEach((ele) => {
       this.renderChart(ele)
     })
-    const str = `
-        emphasis: {
-          show: true,
-          textStyle: {
-            fontSize: 18,
-            fontWeight: "bold",
-            color: "#fff",
-            rich: {
-              val: {
-                fontSize: 12,
-                color: "#fff"
-              },
-              type: {
-                fontSize: 12,
-                color: "#D9D9D9"
-              }
-            }
-          }
-        }`
-    const string = `
-        "emphasis": {
-          "show": true,
-          "textStyle": {
-            "fontSize": 18,
-            "fontWeight": "bold",
-            "color": "#fff",
-            "rich": {
-              "val": {
-                "fontSize": 12,
-                "color": "#fff"
-              },
-              "type": {
-                "fontSize": 12,
-                "color": "#D9D9D9"
-              }
-            }
-          }
-        }`
-    console.log(JSON.parse(string))
-    console.log(addKeyQuotationMarks(str) === string)
+    // console.log(JSON.parse(`{${addKeyQuotationMarks(str)}}`))
   }
 }
 </script>
