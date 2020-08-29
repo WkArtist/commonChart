@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { clearKeyQuotationMarks } from '@/util.js'
 export default {
   data() {
     return {
@@ -125,7 +126,7 @@ export default {
           }]
         }
       ]
-      ele.code = JSON.parse(JSON.stringify(optionLine[ele.id], undefined, 2))
+      ele.code = clearKeyQuotationMarks(JSON.stringify(optionLine[ele.id], undefined, 2))
       const chartLine = this.$refs[`chart${ele.id}`][0]
       const myChart = this.$echarts.init(chartLine)
       myChart.setOption(optionLine[ele.id])

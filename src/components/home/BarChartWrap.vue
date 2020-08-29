@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { clearKeyQuotationMarks } from '@/util.js'
 export default {
   data() {
     return {
@@ -70,22 +71,13 @@ export default {
             xAxis: ['社保', '缴纳罚款', '违法处理', '户政', '出入境'],
             yAxis: [617, 593, 327, 294, 236]
           }
-        }, {
-          id: 5,
-          name: '特殊条形图',
-          type: 'bar',
-          active: false,
-          data: {
-            category: ['服务器数（台）', '计算容量（核）', '内存容量（GB）', '存储容量（PB）'],
-            barData: [60, 30, 52, 34, 90],
-            lineData: [63, 63, 63, 63, 100]
-          }
         }
       ],
       currentCode: ''
     }
   },
   methods: {
+
     renderChart(ele) {
       // const lineColor = ['#2AD49A', '#2ED6E6']
       const optionLine = [
@@ -539,126 +531,9 @@ export default {
             data: ele.data.yAxis
           }
           ]
-        }, {
-          backgroundColor: '#0d073d', // 背景色
-          grid: [{ // 图形的位置
-            left: '10',
-            bottom: '20',
-            top: 3,
-            right: 30
-          }],
-          xAxis: {
-            show: false// 是否展示X轴
-          },
-          yAxis: {
-            data: ele.data.category,
-            show: true,
-            axisLabel: {
-              inside: true,
-              verticalAlign: 'middle',
-              lineHeight: 150,
-              color: '#4488bc',
-              fontSize: 8
-            },
-            axisLine: {
-              show: false// 不展示刻度
-            }
-          },
-          series: [{ // 外边框
-            name: '',
-            type: 'pictorialBar', // echarts图的类型
-            symbol: 'reat', // 内部类型（方块，圆，svg，base64图片）
-            barWidth: '3%',
-            barMaxWidth: '10%',
-            symbolOffset: [70, 0], // 柱子的位置
-            symbolSize: [130, 20], // size,单个symbol的大小
-            itemStyle: {
-              normal: {
-                color: '#3f559c'
-              }
-            },
-            z: -180, // 图层值
-            symbolRepeat: null, // 是否重复symbol
-            data: [1, 1, 1, 1],
-            barGap: 50, // 柱子的“粗细”
-            barCategoryGap: 0,
-            animationEasing: 'elasticOut'
-
-          },
-          { // 内边框
-            name: '',
-            type: 'pictorialBar',
-            symbol: 'reat',
-            barWidth: '3%',
-            barMaxWidth: '20%',
-            symbolOffset: [72, 0],
-            symbolSize: [125, 18],
-            itemStyle: {
-              normal: {
-
-                color: '#0d073d'
-              }
-            },
-            z: -20,
-            symbolRepeat: null,
-            data: [1, 1, 1, 1],
-            barGap: 45,
-            barCategoryGap: 0,
-            animationEasing: 'elasticOut'
-
-          },
-
-          { // 下层块
-            name: '',
-            type: 'pictorialBar',
-            symbol: 'roundRect',
-            barWidth: '3%',
-            barMaxWidth: '20%',
-            symbolOffset: [75, 0],
-            itemStyle: {
-              normal: {
-
-                color: '#1F4683'
-              }
-            },
-            z: -11,
-            symbolRepeat: true,
-            symbolSize: [6, 16],
-            data: ele.data.lineData,
-            barGap: 50,
-            barCategoryGap: 0,
-            animationEasing: 'elasticOut'
-
-          },
-
-          { // 上层块
-            name: '', // blue bar
-            type: 'pictorialBar',
-            symbol: 'roundRect',
-            barWidth: '3%',
-            barMaxWidth: 100,
-            symbolOffset: [75, 0],
-            itemStyle: {
-              normal: {
-                barMaxWidth: '20%',
-                barBorderRadius: 100,
-                color: '#6DE8FA'
-
-              }
-            },
-            symbolRepeat: true,
-            symbolSize: [6, 16],
-            // symbolClip: true,
-            data: ele.data.barData
-          }
-
-          ]
-
         }
       ]
-
-      ele.code = JSON.stringify(optionLine[ele.id], undefined, 2)
-      console.log(this.$refs[`chart${ele.id}`])
+      ele.code = clearKeyQuotationMarks(JSON.stringify(optionLine[ele.id], undefined, 2))
       const chartLine = this.$refs[`chart${ele.id}`][0]
       const myChart = this.$echarts.init(chartLine)
       myChart.setOption(optionLine[ele.id])
@@ -686,7 +561,6 @@ export default {
         }
       })
     }
-
   },
   computed: {
     listenClearActive() {
@@ -702,7 +576,6 @@ export default {
     this.chartList.forEach((ele) => {
       this.renderChart(ele)
     })
-    // this.renderChart(this.chartList[2])
   }
 }
 </script>

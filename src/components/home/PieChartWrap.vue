@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { clearKeyQuotationMarks, dynamicPieChart, addKeyQuotationMarks } from '@/util.js'
 import 'echarts-liquidfill/src/liquidFill'
 export default {
   data() {
@@ -102,9 +103,7 @@ export default {
           active: false,
           data: [0.5, 0.5, 0.5]
         }
-      ],
-      currentCode: '',
-      timer: null
+      ]
     }
   },
   methods: {
@@ -430,70 +429,12 @@ export default {
         }
       ]
 
-      ele.code = JSON.stringify(optionpie[ele.id], undefined, 2)
+      ele.code = clearKeyQuotationMarks(JSON.stringify(optionpie[ele.id], undefined, 2))
       const chartPie = this.$refs[`chart${ele.id}`][0]
       const myChart = this.$echarts.init(chartPie)
       myChart.setOption(optionpie[ele.id])
-      const self = this
-      function clearCurrent() {
-        myChart.dispatchAction({
-          type: 'downplay',
-          seriesIndex: 0,
-          dataIndex: 0
-        })
-        myChart.dispatchAction({
-          type: 'downplay',
-          seriesIndex: 0,
-          dataIndex: 1
-        })
-      }
-      function rotation() {
-        let i = 1
-        self.timer = setInterval(() => {
-          clearCurrent()
-          myChart.dispatchAction({
-            type: 'highlight',
-            seriesIndex: 0,
-            dataIndex: i % 2
-          })
-          i++
-        }, 3000)
-      }
-      if (ele.id === 1) { // 轮播饼图
-        myChart.dispatchAction({
-          type: 'highlight',
-          seriesIndex: 0,
-          dataIndex: 0
-        })
-        rotation()
-        myChart.on('mouseover', (e) => {
-          if (e.dataIndex === 1) {
-            clearInterval(self.timer)
-            self.timer = null
-            myChart.dispatchAction({
-              type: 'downplay',
-              seriesIndex: 0,
-              dataIndex: 0
-            })
-          }
-          if (e.dataIndex === 0) {
-            clearInterval(self.timer)
-            self.timer = null
-            myChart.dispatchAction({
-              type: 'downplay',
-              seriesIndex: 0,
-              dataIndex: 1
-            })
-          }
-        })
-        myChart.on('mouseout', (e) => {
-          myChart.dispatchAction({
-            type: 'highlight',
-            seriesIndex: 0,
-            dataIndex: 0
-          })
-          rotation()
-        })
+      if (ele.id === 1) {
+        dynamicPieChart(myChart)
       }
     },
     clearActive() {
@@ -534,7 +475,46 @@ export default {
     this.chartList.forEach((ele) => {
       this.renderChart(ele)
     })
-    // this.renderChart(this.chartList[2])
+    const str = `
+        emphasis: {
+          show: true,
+          textStyle: {
+            fontSize: 18,
+            fontWeight: "bold",
+            color: "#fff",
+            rich: {
+              val: {
+                fontSize: 12,
+                color: "#fff"
+              },
+              type: {
+                fontSize: 12,
+                color: "#D9D9D9"
+              }
+            }
+          }
+        }`
+    const string = `
+        "emphasis": {
+          "show": true,
+          "textStyle": {
+            "fontSize": 18,
+            "fontWeight": "bold",
+            "color": "#fff",
+            "rich": {
+              "val": {
+                "fontSize": 12,
+                "color": "#fff"
+              },
+              "type": {
+                "fontSize": 12,
+                "color": "#D9D9D9"
+              }
+            }
+          }
+        }`
+    console.log(JSON.parse(string))
+    console.log(addKeyQuotationMarks(str) === string)
   }
 }
 </script>

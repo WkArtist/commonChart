@@ -1,6 +1,6 @@
 <template>
   <div class="code-wrap">
-      <codemirror ref="myCm" class="code-mirrir" v-model="content" :options="cmOptions"/>
+      <codemirror ref="myCm" class="code-mirrir" @input="onCmCodeChange" v-model="content" :options="cmOptions"/>
       <!-- <editor
       v-model="content"
       @init="editorInit"
@@ -57,6 +57,9 @@ export default {
       require('brace/mode/less')
       require('brace/theme/github')
       require('brace/snippets/javascript') // snippet
+    },
+    onCmCodeChange(newCode) {
+      console.log('this is new code', newCode)
     }
   },
   computed: {
