@@ -9,14 +9,15 @@ export default new Vuex.Store({
     chartOptionsList: {
       bar: [],
       line: [],
-      pie: []
+      pie: [],
+      radar: []
     },
     chartData,
     currentActive: {
       type: 'pie',
       index: 0
     },
-    currentCode: '',
+    currentChartChange: false,
     clearActive: {
       from: '',
       value: false

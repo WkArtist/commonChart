@@ -48,10 +48,17 @@ export default {
     },
     optionRadar() {
       return this.$store.state.chartOptionsList.radar
+    },
+    currentChartChange() {
+      return this.$store.state.currentChartChange
     }
   },
   watch: {
-
+    currentChartChange() {
+      if (this.$store.state.currentActive.type === 'radar') {
+        this.renderChart(this.$store.state.chartData[this.$store.state.currentActive.type][this.$store.state.currentActive.index])
+      }
+    }
   },
   mounted() {
     this.chartList.forEach((ele) => {

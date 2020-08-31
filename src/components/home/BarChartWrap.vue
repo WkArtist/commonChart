@@ -48,10 +48,17 @@ export default {
     },
     optionBar() {
       return this.$store.state.chartOptionsList.bar
+    },
+    currentChartChange() {
+      return this.$store.state.currentChartChange
     }
   },
   watch: {
-
+    currentChartChange() {
+      if (this.$store.state.currentActive.type === 'bar') {
+        this.renderChart(this.$store.state.chartData[this.$store.state.currentActive.type][this.$store.state.currentActive.index])
+      }
+    }
   },
   mounted() {
     this.chartList.forEach((ele) => {

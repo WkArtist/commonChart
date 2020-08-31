@@ -1,6 +1,11 @@
 <template>
   <div class="code-wrap">
-      <codemirror ref="myCm" class="code-mirrir" @input="onCmCodeChange" v-model="content" :options="cmOptions"/>
+      <codemirror
+      ref="myCm"
+      class="code-mirrir"
+      @blur="onCmCodeChange"
+      v-model="content"
+      :options="cmOptions"/>
   </div>
 </template>
 
@@ -47,14 +52,15 @@ export default {
       require('brace/theme/github')
       require('brace/snippets/javascript') // snippet
     },
-    onCmCodeChange(newCode) {
-      // console.log('this is new code', newCode)
-      // console.log(this.$store.state.chartOptionsList[this.$store.state.currentActive.type][this.$store.state.currentActive.index])
-      // console.log(JSON.parse(addKeyQuotationMarks(newCode)))
+    onCmCodeChange() {
       this.$store.commit('setChartOptions', {
         type: this.$store.state.currentActive.type,
         index: this.$store.state.currentActive.index,
-        value: JSON.parse(addKeyQuotationMarks(newCode))
+        value: JSON.parse(addKeyQuotationMarks(this.content))
+      })
+      this.$store.commit('setState', {
+        name: 'currentChartChange',
+        value: !this.$store.state.currentChartChange
       })
     }
   },

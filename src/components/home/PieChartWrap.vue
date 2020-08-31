@@ -52,10 +52,17 @@ export default {
     },
     optionPie() {
       return this.$store.state.chartOptionsList.pie
+    },
+    currentChartChange() {
+      return this.$store.state.currentChartChange
     }
   },
   watch: {
-
+    currentChartChange() {
+      if (this.$store.state.currentActive.type === 'pie') {
+        this.renderChart(this.$store.state.chartData[this.$store.state.currentActive.type][this.$store.state.currentActive.index])
+      }
+    }
   },
   mounted() {
     this.chartList.forEach((ele) => {
@@ -65,7 +72,6 @@ export default {
       })
       this.renderChart(ele)
     })
-    // console.log(JSON.parse(`{${addKeyQuotationMarks(str)}}`))
   }
 }
 </script>
