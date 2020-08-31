@@ -1,19 +1,11 @@
 <template>
   <div class="code-wrap">
       <codemirror ref="myCm" class="code-mirrir" @input="onCmCodeChange" v-model="content" :options="cmOptions"/>
-      <!-- <editor
-      v-model="content"
-      @init="editorInit"
-      lang="html"
-      theme="chrome"
-      width="470"
-      height="920"
-      ></editor> -->
-      <!-- <jsonView :json="content" :closed="false"/> -->
   </div>
 </template>
 
 <script>
+import { addKeyQuotationMarks } from '@/util.js'
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/theme/base16-dark.css'
 import 'codemirror/mode/javascript/javascript.js'
@@ -27,12 +19,9 @@ import 'codemirror/addon/fold/foldgutter'
 import 'codemirror/addon/fold/brace-fold'
 import 'codemirror/addon/fold/comment-fold'
 
-// import { jsonView } from 'jsonview-vue'
 export default {
   components: {
     codemirror
-    // editor: require('vue2-ace-editor')
-    // jsonView
   },
   data() {
     return {
@@ -59,7 +48,14 @@ export default {
       require('brace/snippets/javascript') // snippet
     },
     onCmCodeChange(newCode) {
-      console.log('this is new code', newCode)
+      // console.log('this is new code', newCode)
+      // console.log(this.$store.state.chartOptionsList[this.$store.state.currentActive.type][this.$store.state.currentActive.index])
+      // console.log(JSON.parse(addKeyQuotationMarks(newCode)))
+      this.$store.commit('setChartOptions', {
+        type: this.$store.state.currentActive.type,
+        index: this.$store.state.currentActive.index,
+        value: JSON.parse(addKeyQuotationMarks(newCode))
+      })
     }
   },
   computed: {
@@ -70,11 +66,14 @@ export default {
   watch: {
     currentCode: {
       handler: function(val) {
-        console.log(val)
+        // console.log(val)
         this.content = val
       },
       deep: true
     }
+  },
+  mounted() {
+    this.content = this.currentCode
   }
 }
 </script>

@@ -7,11 +7,13 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     chartOptionsList: {
-      bar: []
+      bar: [],
+      line: [],
+      pie: []
     },
     chartData,
     currentActive: {
-      type: 'bar',
+      type: 'pie',
       index: 0
     },
     currentCode: '',
@@ -24,17 +26,11 @@ export default new Vuex.Store({
     setState(state, payload) {
       state[payload.name] = payload.value
     },
-    setCurrentCode(state, val) {
-      state.currentCode = val
-    },
-    setClearActive(state, val) {
-      state.clearActive = val
-    },
     chartOptions(state, payload) {
-      state.chartOptionsList.bar = chartOptions.bar(payload)
+      state.chartOptionsList[payload.target] = chartOptions[payload.target](payload.value)
     },
-    setCurrentActive(state, payload) {
-      state.currentActive = payload
+    setChartOptions(state, payload) {
+      state.chartOptionsList[payload.type][payload.index] = payload.value
     }
   },
   actions: {

@@ -15,31 +15,17 @@ import { clearKeyQuotationMarks } from '@/util.js'
 export default {
   data() {
     return {
-      name: 'BarChart',
-      currentCode: '',
-      options: []
+      name: 'BarChart'
     }
   },
   methods: {
     renderChart(ele) {
-      const chartLine = this.$refs[`chart${ele.id}`][0]
-      const myChart = this.$echarts.init(chartLine)
+      const chartBar = this.$refs[`chart${ele.id}`][0]
+      const myChart = this.$echarts.init(chartBar)
       myChart.setOption(this.optionBar[ele.id])
       ele.code = clearKeyQuotationMarks(JSON.stringify(this.optionBar[ele.id], undefined, 2))
     },
-    clearActive() {
-      if (this.$store.state.clearActive.from === this.name) {
-        return
-      }
-      this.chartList.forEach(ele => {
-        ele.active = false
-      })
-    },
     selectItem(id) {
-      this.$store.commit('setClearActive', {
-        from: this.name,
-        value: !this.$store.state.clearActive.value
-      })
       this.chartList.forEach(ele => {
         if (ele.id === id) {
           ele.active = !ele.active
@@ -50,7 +36,6 @@ export default {
               index: ele.id
             }
           })
-          // this.$store.commit('setCurrentCode', this.chartList[id].code)
         } else {
           ele.active = false
         }
@@ -58,9 +43,6 @@ export default {
     }
   },
   computed: {
-    listenClearActive() {
-      return this.$store.state.clearActive.value
-    },
     chartList() {
       return this.$store.state.chartData.bar
     },
@@ -69,13 +51,14 @@ export default {
     }
   },
   watch: {
-    listenClearActive(val) {
-      this.clearActive()
-    }
+
   },
   mounted() {
     this.chartList.forEach((ele) => {
-      this.$store.commit('chartOptions', ele)
+      this.$store.commit('chartOptions', {
+        target: 'bar',
+        value: ele
+      })
       this.renderChart(ele)
     })
   }
